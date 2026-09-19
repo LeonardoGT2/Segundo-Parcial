@@ -18,6 +18,11 @@ public class Empleado {
     private BigDecimal salarioMensual;
     private LocalDate fechaContratacion;
     private boolean activo;
+    
+    /** Opciones válidas para el tipo de contrato (campo de selección fija). */
+    public static final String[] TIPOS_CONTRATO = {"Temporal", "Permanente", "Por hora"};
+
+    private String tipoContrato = "Temporal";
 
     /** Constructor vacío: útil para ir llenando el objeto desde el formulario de la UI. */
     public Empleado() {
@@ -91,7 +96,15 @@ public class Empleado {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
+ 
+    public String getTipoContrato() {
+        return tipoContrato;
+    }
 
+    public void setTipoContrato(String tipoContrato) {
+        this.tipoContrato = tipoContrato;
+    }
+    
     @Override
     public String toString() {
         return "Empleado{" +
@@ -101,6 +114,7 @@ public class Empleado {
                 ", salarioMensual=" + salarioMensual +
                 ", fechaContratacion=" + fechaContratacion +
                 ", activo=" + activo +
+                ", tipoContrato='" + tipoContrato + '\'' +
                 '}';
     }
 }
