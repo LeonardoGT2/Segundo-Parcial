@@ -49,8 +49,7 @@ public class EmpleadoDAO {
 
     public List<Empleado> listarTodos() throws SQLException {
         String sql = "SELECT id, nombre_completo, departamento, salario_mensual, "
-                + "fecha_contratacion, activo FROM empleados ORDER BY id";
-
+                + "fecha_contratacion, activo, tipo_contrato FROM empleados ORDER BY id";
         List<Empleado> resultado = new ArrayList<>();
 
         try (Connection con = ConexionBD.obtenerConexion();
@@ -66,7 +65,7 @@ public class EmpleadoDAO {
 
     public Optional<Empleado> buscarPorId(int id) throws SQLException {
         String sql = "SELECT id, nombre_completo, departamento, salario_mensual, "
-                + "fecha_contratacion, activo FROM empleados WHERE id = ?";
+                + "fecha_contratacion, activo, tipo_contrato FROM empleados WHERE id = ?";
 
         try (Connection con = ConexionBD.obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -115,7 +114,7 @@ public class EmpleadoDAO {
 
     /** Convierte la fila actual de un ResultSet en un objeto Empleado. */
     private Empleado mapearFila(ResultSet rs) throws SQLException {
-        return new Empleado(
+        Empleado emp = new Empleado(
                 rs.getInt("id"),
                 rs.getString("nombre_completo"),
                 rs.getString("departamento"),
@@ -123,5 +122,8 @@ public class EmpleadoDAO {
                 rs.getDate("fecha_contratacion").toLocalDate(),
                 rs.getBoolean("activo")
         );
+        emp.setTipoContrato(rs.getString("tipo_contrato"));
+        return emp;
     }
-}
+    }
+
