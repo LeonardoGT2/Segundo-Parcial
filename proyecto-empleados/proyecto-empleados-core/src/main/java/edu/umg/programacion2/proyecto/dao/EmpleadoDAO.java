@@ -84,7 +84,7 @@ public class EmpleadoDAO {
 
     public boolean actualizar(Empleado item) throws SQLException {
         String sql = "UPDATE empleados SET nombre_completo = ?, departamento = ?, "
-                + "salario_mensual = ?, fecha_contratacion = ?, activo = ? WHERE id = ?";
+                + "salario_mensual = ?, fecha_contratacion = ?, activo = ?, tipo_contrato = ? WHERE id = ?";
 
         try (Connection con = ConexionBD.obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -94,8 +94,8 @@ public class EmpleadoDAO {
             ps.setBigDecimal(3, item.getSalarioMensual());
             ps.setDate(4, java.sql.Date.valueOf(item.getFechaContratacion()));
             ps.setBoolean(5, item.isActivo());
-            ps.setInt(6, item.getId());
-
+            ps.setString(6, item.getTipoContrato());
+            ps.setInt(7, item.getId());
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas > 0;
         }
