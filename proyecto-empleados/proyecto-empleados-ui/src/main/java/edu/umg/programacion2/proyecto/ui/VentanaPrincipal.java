@@ -79,7 +79,7 @@ public class VentanaPrincipal extends JFrame {
     }
 
     private JScrollPane construirPanelTabla() {
-        String[] columnas = {"ID", "Nombre completo", "Departamento", "Salario", "Fecha contratación", "Activo"};
+        String[] columnas = {"ID", "Nombre completo", "Departamento", "Salario", "Fecha contratación", "Activo", "Tipo de contrato"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int fila, int columna) {
@@ -186,7 +186,8 @@ public class VentanaPrincipal extends JFrame {
                         emp.getDepartamento(),
                         "Q" + emp.getSalarioMensual().toPlainString(),
                         emp.getFechaContratacion().format(FORMATO_FECHA),
-                        emp.isActivo() ? "Sí" : "No"
+                        emp.isActivo() ? "Sí" : "No",
+                        emp.getTipoContrato()
                 });
             }
         } catch (SQLException ex) {
@@ -212,6 +213,7 @@ public class VentanaPrincipal extends JFrame {
                 txtSalario.setText(emp.getSalarioMensual().toPlainString());
                 txtFecha.setText(emp.getFechaContratacion().format(FORMATO_FECHA));
                 chkActivo.setSelected(emp.isActivo());
+                cmbTipoContrato.setSelectedItem(emp.getTipoContrato());
             } else {
                 // La fila estaba en la tabla pero ya no existe en la BD (por ejemplo,
                 // otro usuario la eliminó); simplemente refrescamos la lista.
