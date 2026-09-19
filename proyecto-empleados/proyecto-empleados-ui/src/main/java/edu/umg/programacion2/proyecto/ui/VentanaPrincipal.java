@@ -52,6 +52,7 @@ public class VentanaPrincipal extends JFrame {
     private JTextField txtFecha;
     private JCheckBox chkActivo;
     private JComboBox<String> cmbTipoContrato;
+    private JLabel lblTotales;
     private JLabel lblIdSeleccionado;
 
     /** id del empleado actualmente seleccionado en la tabla; -1 significa "ninguno / nuevo". */
@@ -139,24 +140,33 @@ public class VentanaPrincipal extends JFrame {
         c.gridwidth = 2;
         campos.add(chkActivo, c);
         
-        JPanel botones = new JPanel(new GridLayout(1, 5, 8, 0));
+        lblTotales = new JLabel("Totales: presiona «Ver totales»");
+        c.gridx = 0;
+        c.gridy = 7;
+        c.gridwidth = 2;
+        campos.add(lblTotales, c);
+        
+        JPanel botones = new JPanel(new GridLayout(1, 6, 8, 0));
         JButton btnNuevo = new JButton("Nuevo");
         JButton btnCrear = new JButton("Crear");
         JButton btnActualizar = new JButton("Actualizar");
         JButton btnEliminar = new JButton("Eliminar");
         JButton btnRefrescar = new JButton("Refrescar");
+        JButton btnTotales = new JButton("Ver totales");
 
         btnNuevo.addActionListener(e -> limpiarFormulario());
         btnCrear.addActionListener(e -> crearEmpleado());
         btnActualizar.addActionListener(e -> actualizarEmpleado());
         btnEliminar.addActionListener(e -> eliminarEmpleado());
         btnRefrescar.addActionListener(e -> cargarEmpleados());
+        btnTotales.addActionListener(e -> verTotales());
 
         botones.add(btnNuevo);
         botones.add(btnCrear);
         botones.add(btnActualizar);
         botones.add(btnEliminar);
         botones.add(btnRefrescar);
+        botones.add(btnTotales);
 
         contenedor.add(campos, BorderLayout.CENTER);
         contenedor.add(botones, BorderLayout.SOUTH);
