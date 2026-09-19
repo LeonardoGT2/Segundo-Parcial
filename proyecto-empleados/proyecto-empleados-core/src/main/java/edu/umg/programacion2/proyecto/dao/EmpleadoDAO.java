@@ -23,8 +23,8 @@ public class EmpleadoDAO {
 
     public Empleado crear(Empleado item) throws SQLException {
         String sql = "INSERT INTO empleados "
-                + "(nombre_completo, departamento, salario_mensual, fecha_contratacion, activo) "
-                + "VALUES (?, ?, ?, ?, ?)";
+                + "(nombre_completo, departamento, salario_mensual, fecha_contratacion, activo, tipo_contrato) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ConexionBD.obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -34,6 +34,7 @@ public class EmpleadoDAO {
             ps.setBigDecimal(3, item.getSalarioMensual());
             ps.setDate(4, java.sql.Date.valueOf(item.getFechaContratacion()));
             ps.setBoolean(5, item.isActivo());
+            ps.setString(6, item.getTipoContrato());
 
             ps.executeUpdate();
 
