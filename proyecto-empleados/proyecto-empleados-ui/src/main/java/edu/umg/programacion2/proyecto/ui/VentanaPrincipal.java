@@ -15,6 +15,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -47,6 +49,7 @@ public class VentanaPrincipal extends JFrame {
     private JTextField txtSalario;
     private JTextField txtFecha;
     private JCheckBox chkActivo;
+    private JComboBox<String> cmbTipoContrato;
     private JLabel lblIdSeleccionado;
 
     /** id del empleado actualmente seleccionado en la tabla; -1 significa "ninguno / nuevo". */
@@ -64,12 +67,13 @@ public class VentanaPrincipal extends JFrame {
 
     private void construirInterfaz() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 550);
+        setSize(800, 600);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
         add(construirPanelTabla(), BorderLayout.CENTER);
         add(construirPanelFormulario(), BorderLayout.SOUTH);
+        
     }
 
     private JScrollPane construirPanelTabla() {
@@ -110,6 +114,11 @@ public class VentanaPrincipal extends JFrame {
         txtSalario = new JTextField(20);
         txtFecha = new JTextField("yyyy-MM-dd", 20);
         chkActivo = new JCheckBox("Activo", true);
+        cmbTipoContrato = new JComboBox<>();
+        cmbTipoContrato.addItem("Seleccione...");
+        for (String tipo : Empleado.TIPOS_CONTRATO) {
+            cmbTipoContrato.addItem(tipo);
+        }
 
         c.gridx = 0;
         c.gridy = 0;
@@ -121,12 +130,13 @@ public class VentanaPrincipal extends JFrame {
         agregarFila(campos, c, 2, "Departamento:", txtDepartamento);
         agregarFila(campos, c, 3, "Salario mensual:", txtSalario);
         agregarFila(campos, c, 4, "Fecha contratación (yyyy-MM-dd):", txtFecha);
+        agregarFila(campos, c, 5, "Tipo de contrato:", cmbTipoContrato);
 
         c.gridx = 0;
-        c.gridy = 5;
+        c.gridy = 6;
         c.gridwidth = 2;
         campos.add(chkActivo, c);
-
+        
         JPanel botones = new JPanel(new GridLayout(1, 5, 8, 0));
         JButton btnNuevo = new JButton("Nuevo");
         JButton btnCrear = new JButton("Crear");
@@ -151,7 +161,7 @@ public class VentanaPrincipal extends JFrame {
         return contenedor;
     }
 
-    private void agregarFila(JPanel panel, GridBagConstraints c, int fila, String etiqueta, JTextField campo) {
+    private void agregarFila(JPanel panel, GridBagConstraints c, int fila, String etiqueta, JComponent campo) {
         c.gridx = 0;
         c.gridy = fila;
         panel.add(new JLabel(etiqueta, SwingConstants.RIGHT), c);
