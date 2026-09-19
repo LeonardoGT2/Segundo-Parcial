@@ -1,22 +1,5 @@
 package edu.umg.programacion2.proyecto.ui;
 
-import edu.umg.programacion2.proyecto.dao.EmpleadoDAO;
-import edu.umg.programacion2.proyecto.modelo.Empleado;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -27,8 +10,27 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+
+import edu.umg.programacion2.proyecto.dao.EmpleadoDAO;
+import edu.umg.programacion2.proyecto.modelo.Empleado;
 
 /**
  * Ventana principal: lista de empleados (JTable) + formulario + botones
@@ -358,7 +360,15 @@ public class VentanaPrincipal extends JFrame {
             return null;
         }
 
-        return new Empleado(nombre, departamento, salario, fecha, chkActivo.isSelected());
+        String tipoContrato = (String) cmbTipoContrato.getSelectedItem();
+        if (tipoContrato == null || !Arrays.asList(Empleado.TIPOS_CONTRATO).contains(tipoContrato)) {
+            mostrarValidacion("Selecciona un tipo de contrato válido (Temporal, Permanente o Por hora).");
+            return null;
+        }
+
+        Empleado empleado = new Empleado(nombre, departamento, salario, fecha, chkActivo.isSelected());
+        empleado.setTipoContrato(tipoContrato);
+        return empleado;
     }
 
     private void limpiarFormulario() {
@@ -369,6 +379,7 @@ public class VentanaPrincipal extends JFrame {
         txtSalario.setText("");
         txtFecha.setText("");
         chkActivo.setSelected(true);
+        cmbTipoContrato.setSelectedIndex(0);
         tablaEmpleados.clearSelection();
     }
 
