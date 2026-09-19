@@ -34,13 +34,12 @@
 --    se registra activo por defecto. "Inactivo" no borra al empleado (ver
 --    regla de negocio de historial) — por eso este campo existe separado
 --    de la operación de eliminar (borrado físico real, sección "eliminar").
+
+-- 7. tipo_contrato VARCHAR(20) NOT NULL DEFAULT 'Temporal'
+--    Campo de selección fija (Temporal / Permanente / Por hora). La validación
+--    de que sea una de las 3 opciones se hace en Java (JComboBox + validación
+--    antes de guardar). El DEFAULT protege a los registros ya existentes.
 -- =====================================================================
-
-CREATE DATABASE IF NOT EXISTS empleados_db
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
-
-USE empleados_db;
 
 CREATE TABLE IF NOT EXISTS empleados (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
@@ -48,11 +47,12 @@ CREATE TABLE IF NOT EXISTS empleados (
     departamento        VARCHAR(50)     NOT NULL,
     salario_mensual     DECIMAL(10,2)   NOT NULL,
     fecha_contratacion  DATE            NOT NULL,
-    activo              BOOLEAN         NOT NULL DEFAULT TRUE
+        activo              BOOLEAN         NOT NULL DEFAULT TRUE,
+    tipo_contrato       VARCHAR(20)     NOT NULL DEFAULT 'Temporal'
 );
 
 -- Datos de ejemplo (los del enunciado), útiles para probar el CRUD desde el día 1.
-INSERT INTO empleados (nombre_completo, departamento, salario_mensual, fecha_contratacion, activo) VALUES
-('Ana Lucía Pérez',     'Sistemas',     8500.00, '2024-03-15', TRUE),
-('Carlos Roberto Mux',  'Ventas',       6200.00, '2024-01-10', TRUE),
-('Diana Sofía Cabrera', 'Contabilidad', 7100.00, '2023-11-02', FALSE);
+INSERT INTO empleados (nombre_completo, departamento, salario_mensual, fecha_contratacion, activo, tipo_contrato) VALUES
+('Ana Lucía Pérez',     'Sistemas',     8500.00, '2024-03-15', TRUE,  'Permanente'),
+('Carlos Roberto Mux',  'Ventas',       6200.00, '2024-01-10', TRUE,  'Temporal'),
+('Diana Sofía Cabrera', 'Contabilidad', 7100.00, '2023-11-02', FALSE, 'Por hora');
