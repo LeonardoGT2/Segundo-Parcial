@@ -70,7 +70,7 @@ public class VentanaPrincipal extends JFrame {
 
     private void construirInterfaz() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(800, 650);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
@@ -382,8 +382,15 @@ public class VentanaPrincipal extends JFrame {
         empleado.setTipoContrato(tipoContrato);
         return empleado;
     }
+    private void verTotales() {
+        lblTotales.setText("Totales: (pendiente de calcular)");
+    }
 
     private void limpiarFormulario() {
+        // -----------------------------------------------------------------
+        // Totales (mejora #9)
+        // -----------------------------------------------------------------
+
         idSeleccionado = -1;
         lblIdSeleccionado.setText("Nuevo empleado (sin seleccionar)");
         txtNombre.setText("");
