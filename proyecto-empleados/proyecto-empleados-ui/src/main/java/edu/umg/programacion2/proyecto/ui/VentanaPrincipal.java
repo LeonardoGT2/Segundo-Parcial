@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -386,12 +387,24 @@ public class VentanaPrincipal extends JFrame {
         try {
             List<Empleado> lista = empleadoDAO.listarTodos();
 
+            if (lista.isEmpty()) {
+                lblTotales.setText("Totales: no hay empleados registrados.");
+                JOptionPane.showMessageDialog(this,
+                        "No hay empleados registrados para calcular totales.",
+                        "Sin datos", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
             BigDecimal suma = BigDecimal.ZERO;
             for (Empleado emp : lista) {
                 suma = suma.add(emp.getSalarioMensual());
             }
+            BigDecimal promedio = suma.divide(
+                    BigDecimal.valueOf(lista.size()), 2, RoundingMode.HALF_UP);
 
-            lblTotales.setText("Total de salarios: Q" + suma.toPlainString());
+            lblTotales.setText("Total: Q" + suma.setScale(2, RoundingMode.HALF_UP).toPlainString()
+                    + "   |   Promedio: Q" + promedio.toPlainString()
+                    + "   (" + lista.size() + " empleados)");
         } catch (SQLException ex) {
             mostrarError("No se pudieron calcular los totales.", ex);
         }
