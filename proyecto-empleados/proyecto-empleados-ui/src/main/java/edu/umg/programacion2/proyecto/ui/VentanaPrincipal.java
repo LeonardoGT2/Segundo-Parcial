@@ -383,7 +383,18 @@ public class VentanaPrincipal extends JFrame {
         return empleado;
     }
     private void verTotales() {
-        lblTotales.setText("Totales: (pendiente de calcular)");
+        try {
+            List<Empleado> lista = empleadoDAO.listarTodos();
+
+            BigDecimal suma = BigDecimal.ZERO;
+            for (Empleado emp : lista) {
+                suma = suma.add(emp.getSalarioMensual());
+            }
+
+            lblTotales.setText("Total de salarios: Q" + suma.toPlainString());
+        } catch (SQLException ex) {
+            mostrarError("No se pudieron calcular los totales.", ex);
+        }
     }
 
     private void limpiarFormulario() {
